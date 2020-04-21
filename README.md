@@ -2,7 +2,7 @@
 
 Too lazy to click the skip buttons in Youtube? Too much effort clicking the x on popup ads? Don't worry, this extension will do it for you.
 
-Essentially, this is what this (unpacked) extension does:
+Essentially, this is what this (unpacked) Chrome extension does:
  - skips ads whenever the skip button becomes available
  - clicks away popup ads in the blink of an eye
  - mutes video ads
