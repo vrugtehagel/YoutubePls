@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="popup.js"></script>
+	<title>AdSkip</title>
+	<style>
+		body {
+			padding: 0;
+			margin: 0;
+			font: 13px/1.5 Roboto, sans-serif;
+			background-color: white;
+			color: rgba(0, 0, 0, .75);
+		}
+		h1 {
+			font-size: 1em;
+			font-weight: 900;
+			margin: 0;
+			padding: 12px 24px;
+			display: flex;
+			align-items: center;
+			position: relative;
+		}
+		h1 svg {
+			width: 1em;
+			height: 1em;
+			margin-right: 1em;
+			display: inline-block;
+		}
+		@keyframes rotate {
+			from { transform: rotate(0deg); }
+			to { transform: rotate(360deg); }
+		}
+		.loading h1::after {
+			content: "";
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			border: 2px solid transparent;
+			border-bottom-color: #FF0000;
+			border-left-color: #FF0000;
+			position: absolute;
+			top: 50%;
+			right: .75em;
+			margin: -7px 5px 0 0;
+			animation: .7s linear infinite rotate;
+		}
+		ul {
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+		}
+		li {
+			position: relative;
+			white-space: nowrap;
+			display: flex;
+			align-items: center;
+			padding: 12px 108px 12px 24px;
+			border-top: 1px solid #e5e5e5;
+			transition: .3s;
+		}
+		li:hover {
+			background-color: rgba(0, 0, 0, 0.07);
+			cursor: pointer;
+		}
+		li::before {
+			content: "";
+			display: block;
+			width: 28px;
+			height: 12px;
+			background-color: #bdc1c6;
+			border-radius: 6px;
+			position: absolute;
+			right: 24px;
+			top: 50%;
+			transform: translateY(-50%);
+			transition: .08s linear;
+			z-index: 2;
+		}
+		li[data-value=true]::before {
+			opacity: .5;
+			background-color: #1a73e8;
+		}
+		.loading li{
+			pointer-events: none;
+			opacity: 0.5;
+		}
+		li::after {
+			content: "";
+			width: 16px;
+			height: 16px;
+			background-color: white;
+			border-radius: 50%;
+			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .4);
+			display: block;
+			position: absolute;
+			right: 38px;
+			top: 50%;
+			transform: translateY(-50%);
+			transition: .08s linear;
+			z-index: 3;
+		}
+		li[data-value=true]::after {
+			background-color: #1a73e8;
+			transform: translate(18px, -50%);
+		}
+	</style>
+</head>
+<body class="loading">
+	<h1>
+		<svg viewBox="0 0 72 72">
+			<g style="fill:#FF0000;opacity:.7;">
+				<rect x="60" y="0" width="12" height="72"/>
+				<path d="M0 0V72L60 36Z"/>
+			</g>
+		</svg>
+		Convenient Youtube
+	</h1>
+	<ul id="options-list">
+		<li data-option="autoSkip">Automatically skip ads</li>
+		<li data-option="autoClose">Close the popup ads</li>
+		<li data-option="muteAds">Mute ads</li>
+		<li data-option="mimicClick" style="display:none;">Mimic clicking</li>
+		<li data-option="autoImHere">Yes, youtube, I'm still there</li>
+	</ul>
+</body>
+</html>
