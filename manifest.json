@@ -3,7 +3,7 @@
 
 	"name": "Convenient Youtube",
 	"description": "Too lazy to click the skip buttons in Youtube? Too much effort clicking the x on popup ads? Don't worry, this extension will do it for you.",
-	"version": "0.1.0",
+	"version": "0.1.1",
 
 	"page_action": {
 		"default_icon": {
