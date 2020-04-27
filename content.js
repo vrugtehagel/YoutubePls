@@ -24,18 +24,20 @@ console.log('Convenient Youtube started.');
 		config: config,
 		pattern: pattern,
 		ontrue: ontrue = () => {},
-		onfalse: onfalse = () => {}
+		onfalse: onfalse = () => {},
+		onchange: onchange = () => {}
 	}) => {
 		let patternFound = pattern();
 		const callback = value => {
 			if(value) ontrue();
 			else onfalse();
-		}
+		};
 		callback(patternFound);
 		const observer = new MutationObserver(() => {
 			if(pattern() == patternFound) return;
 			patternFound = !patternFound;
 			callback(patternFound);
+			onchange();
 		});
 		observer.observe(element, config);
 		return observer;
@@ -118,6 +120,7 @@ console.log('Convenient Youtube started.');
 			const adModule = ytdApp.querySelector('.video-ads.ytp-ad-module');
 			const popupContainer = ytdApp.querySelector('ytd-popup-container');
 			if(!adModule) return;
+			let dialogs = Array.from(popupContainer.children);
 			let unskippableAdFound = false;
 			adModuleObserver = lookFor({
 				element: adModule,
@@ -206,10 +209,21 @@ console.log('Convenient Youtube started.');
 			lookFor({
 				element: popupContainer,
 				config: {childList: true},
-				pattern: () => (popupContainer.children.length == 1) && (document.hidden || !userActive),
+				onchange: () => {
+					dialogs = Array.from(popupContainer.children);
+				}
+				pattern: () => {
+					if(document.hidden) return true;
+					if(userActive) return false;
+					if(dialogs.length + 1 != popupContainer.children.length) return false;
+					const newDialogs = Array.from(popupContainer.children).filter(dialog => !dialogs.includes(dialog));
+					if(newDialogs.length != 1) return false;
+					return true;
+				},
 				ontrue: () => {
 					log('\tThere\'s a dialog on the screen that I don\'t quite like');
-					const buttons = popupContainer.children[0].querySelector('.buttons');
+					const annoyingDialog = Array.from(popupContainer.children).filter(dialog => !dialogs.includes(dialog))[0];
+					const buttons = annoyingDialog.querySelector('.buttons');
 					if(buttons.children.length > 2) return;
 					if(!options.autoImHere) return;
 					Array.from(buttons.children).forEach(button => {
