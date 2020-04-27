@@ -211,7 +211,7 @@ console.log('Convenient Youtube started.');
 				config: {childList: true},
 				onchange: () => {
 					dialogs = Array.from(popupContainer.children);
-				}
+				},
 				pattern: () => {
 					if(document.hidden) return true;
 					if(userActive) return false;
@@ -233,7 +233,7 @@ console.log('Convenient Youtube started.');
 						log('\t\tI tried to click it away.');
 					});
 				}
-			})
+			});
 		},
 		onfalse: () => {
 			log('You\'re browsing.')
