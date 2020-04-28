@@ -213,11 +213,11 @@ console.log('Convenient Youtube started.');
 					dialogs = Array.from(popupContainer.children);
 				},
 				pattern: () => {
-					if(document.hidden) return true;
 					if(userActive) return false;
 					if(dialogs.length + 1 != popupContainer.children.length) return false;
 					const newDialogs = Array.from(popupContainer.children).filter(dialog => !dialogs.includes(dialog));
 					if(newDialogs.length != 1) return false;
+					console.log(newDialogs);
 					return true;
 				},
 				ontrue: () => {
