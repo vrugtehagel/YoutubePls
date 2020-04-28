@@ -223,6 +223,7 @@ console.log('Convenient Youtube started.');
 				ontrue: () => {
 					log('\tThere\'s a dialog on the screen that I don\'t quite like');
 					const annoyingDialog = Array.from(popupContainer.children).filter(dialog => !dialogs.includes(dialog))[0];
+					console.log(dialogs, popupContainer.children, annoyingDialog);
 					const buttons = annoyingDialog.querySelector('.buttons');
 					if(buttons.children.length > 2) return;
 					if(!options.autoImHere) return;
