@@ -73,7 +73,7 @@ console.log('Convenient Youtube started.');
 		fakeClickId = setTimeout(() => {
 			try{ callback(); }
 			catch(error){ log('Error: clicking failed.', 'warn'); }
-		}, 250);
+		}, 150);
 	};
 
 	const getChild = (element, classname) => {
