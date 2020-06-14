@@ -1,7 +1,7 @@
 console.log('Convenient Youtube started.');
 (function(){
 	const log = (message, type) => {
-		return;
+		//return;
 		if(type == 'warn') console.warn(message);
 		else console.log(message);
 	}
@@ -44,6 +44,28 @@ console.log('Convenient Youtube started.');
 	};
 
 	const isHidden = element => getComputedStyle(element).display == 'none';
+
+	const isPaused = () => {
+		const player = document.querySelector('ytd-player');
+		if(!player) return;
+		const paused = player.querySelector('.paused-mode');
+		const playing = player.querySelector('.playing-mode');
+		if(paused && !playing) return true;
+		if(!paused && playing) return false;
+		log('\tI\'m confused - is the video paused or not?', 'warn');
+		return false;
+	};
+
+	const unpause = () => {
+		const player = document.querySelector('ytd-player');
+		if(!player) return;
+		const paused = player.querySelector('.paused-mode');
+		const playing = player.querySelector('.playing-mode');
+		if(!paused && playing) return;
+		if(!(paused && !playing)) return log('\tI\'m confused - is the video paused or not?', 'warn');
+		const button = player.querySelector('.ytp-play-button.ytp-button');
+		button.click();
+	};
 
 	const clickButton = callback => {
 		//callback();
@@ -120,7 +142,6 @@ console.log('Convenient Youtube started.');
 			const adModule = ytdApp.querySelector('.video-ads.ytp-ad-module');
 			const popupContainer = ytdApp.querySelector('ytd-popup-container');
 			if(!adModule) return;
-			let dialogs = Array.from(popupContainer.children);
 			let unskippableAdFound = false;
 			adModuleObserver = lookFor({
 				element: adModule,
@@ -208,31 +229,35 @@ console.log('Convenient Youtube started.');
 			});
 			lookFor({
 				element: popupContainer,
-				config: {childList: true},
+				config: {childList: true, attributes: true},
 				onchange: () => {
 					dialogs = Array.from(popupContainer.children);
 				},
 				pattern: () => {
-					if(userActive) return false;
-					if(dialogs.length + 1 != popupContainer.children.length) return false;
-					const newDialogs = Array.from(popupContainer.children).filter(dialog => !dialogs.includes(dialog));
-					if(newDialogs.length != 1) return false;
-					console.log(newDialogs);
-					return true;
+					console.log({
+						'isPaused': isPaused(),
+						'userActive': userActive
+					});
+					if(isPaused()) return true;
+					//if(userActive) return false;
+					//if(dialogs.length + 1 != popupContainer.children.length) return false;
+					//if(newDialogs.length != 1) return false;
+					//return true;
 				},
 				ontrue: () => {
 					log('\tThere\'s a dialog on the screen that I don\'t quite like');
-					const annoyingDialog = Array.from(popupContainer.children).filter(dialog => !dialogs.includes(dialog))[0];
-					console.log(dialogs, popupContainer.children, annoyingDialog);
-					const buttons = annoyingDialog.querySelector('.buttons');
-					if(buttons.children.length > 2) return;
-					if(!options.autoImHere) return;
-					Array.from(buttons.children).forEach(button => {
-						if(button.children.length == 0) return;
-						button.click();
-						while(popupContainer.firstChild) popupContainer.removeChild(popupContainer.lastChild);
-						log('\t\tI tried to click it away.');
-					});
+					unpause();
+					//const annoyingDialog = Array.from(popupContainer.children).filter(dialog => !dialogs.includes(dialog))[0];
+					//console.log(dialogs, popupContainer.children, annoyingDialog);
+					//const buttons = annoyingDialog.querySelector('.buttons');
+					//if(buttons.children.length > 2) return;
+					//if(!options.autoImHere) return;
+					//Array.from(buttons.children).forEach(button => {
+					//	if(button.children.length == 0) return;
+					//	button.click();
+					//	while(popupContainer.firstChild) popupContainer.removeChild(popupContainer.lastChild);
+					//	log('\t\tI tried to click it away.');
+					//});
 				}
 			});
 		},
