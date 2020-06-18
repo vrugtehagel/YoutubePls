@@ -138,7 +138,7 @@ console.log('Convenient Youtube started.');
 			return true;
 		},
 		ontrue: () => {
-			log('You\'re watching a video.')
+			//log('You\'re watching a video.')
 			const adModule = ytdApp.querySelector('.video-ads.ytp-ad-module');
 			const popupContainer = ytdApp.querySelector('ytd-popup-container');
 			if(!adModule) return;
@@ -148,11 +148,11 @@ console.log('Convenient Youtube started.');
 				config: {childList: true},
 				pattern: () => !!adModule.children.length,
 				ontrue: () => {
-					log('\tAn ad has loaded.');
+					//log('\tAn ad has loaded.');
 					for(let i = 0; i < adModule.children.length; ++i){
 						const child = adModule.children[i];
 						if(child.classList.contains('ytp-ad-overlay-slot')){
-							log('\t\tIt\'s a popup ad (' + child.children[0].children.length + ' found),');
+							//log('\t\tIt\'s a popup ad (' + child.children[0].children.length + ' found),');
 							let foundAd = false;
 							for(let j = 0; j < child.children[0].children.length; ++j){
 								const ad = child.children[0].children[j];
@@ -161,27 +161,32 @@ console.log('Convenient Youtube started.');
 								const closeButton = ad.querySelector('.ytp-ad-overlay-close-button');
 								clickButton(() => {
 									closeButton.click();
-									log('\t\t\tand I clicked it away');
+									//log('\t\t\tand I clicked it away');
+									log('\tclicked away popup ad');
 								});
 								break;
 							}
-							if(!foundAd) log('\t\t\tbut it was not visible, so I left it be');
+							if(!foundAd){
+								log('\tinvisible ad - no action required');
+								//log('\t\t\tbut it was not visible, so I left it be');
+							}
 						}
 						if(child.classList.contains('ytp-ad-player-overlay')){
-							log('\t\tIt\'s a video ad,');
+							//log('\t\tIt\'s a video ad,');
 							mute();
 							const persistingOverlay = getChild(adModule, 'ytp-ad-persisting-overlay');
 							if(persistingOverlay){
-								log('\t\t\tand it has a persisting overlay, whatever that means.');
+								//log('\t\t\tand it has a persisting overlay, whatever that means.');
 								const skipButtonSlot = persistingOverlay.querySelector('.ytp-ad-skip-button-slot');
 								lookFor({
 									element: skipButtonSlot,
 									config: {attributes: true},
 									pattern: () => !isHidden(skipButtonSlot),
 									ontrue: () => {
-										log('\t\t\t\tI see the skip button,');
+										//log('\t\t\t\tI see the skip button,');
 										clickButton(() => {
-											log('\t\t\t\tand I clicked it.');
+											//log('\t\t\t\tand I clicked it.');
+											log('\tvideo ad skipped');
 											skipButtonSlot.children[0].click();
 											unmute();
 										});
@@ -189,10 +194,11 @@ console.log('Convenient Youtube started.');
 								});
 							}
 							else {
-								log('\t\t\tand it look pretty normal.');
+								//log('\t\t\tand it look pretty normal.');
 								const skipButtonSlot = child.querySelector('.ytp-ad-skip-button-slot');
 								if(!skipButtonSlot){
-									log('\t\t\t\tbut there is no skip button.');
+									//log('\t\t\t\tbut there is no skip button.');
+									log('\tvideo ad not skippable');
 									unskippableAdFound = true;
 									/*lookFor({
 										element: adModule,
@@ -206,9 +212,10 @@ console.log('Convenient Youtube started.');
 										config: {attributes: true},
 										pattern: () => !isHidden(skipButtonSlot),
 										ontrue: () => {
-											log('\t\t\t\tI see the skip button,');
+											//log('\t\t\t\tI see the skip button,');
 											clickButton(() => {
-												log('\t\t\t\tand I clicked it.');
+												//log('\t\t\t\tand I clicked it.');
+												log('\tvideo ad removed');
 												skipButtonSlot.children[0].click();
 												unmute();
 											});
@@ -224,29 +231,27 @@ console.log('Convenient Youtube started.');
 						unskippableAdFound = false;
 						unmute();
 					}
-					log('\tAll the ads are gone!');
+					//log('\tAll the ads are gone!');
 				}
 			});
 			lookFor({
 				element: popupContainer,
-				config: {childList: true, attributes: true},
+				config: {childList: true, attributes: true, subtree: true},
 				onchange: () => {
 					dialogs = Array.from(popupContainer.children);
 				},
 				pattern: () => {
-					console.log({
-						'isPaused': isPaused(),
-						'userActive': userActive
-					});
 					if(isPaused()) return true;
+					return false;
 					//if(userActive) return false;
 					//if(dialogs.length + 1 != popupContainer.children.length) return false;
 					//if(newDialogs.length != 1) return false;
 					//return true;
 				},
 				ontrue: () => {
-					log('\tThere\'s a dialog on the screen that I don\'t quite like');
 					unpause();
+					const buttons = popupContainer.querySelectorAll('yt-confirm-dialog-renderer .buttons > :not([hidden])');
+					if(buttons.length == 1) buttons[0].click();
 					//const annoyingDialog = Array.from(popupContainer.children).filter(dialog => !dialogs.includes(dialog))[0];
 					//console.log(dialogs, popupContainer.children, annoyingDialog);
 					//const buttons = annoyingDialog.querySelector('.buttons');
@@ -262,7 +267,7 @@ console.log('Convenient Youtube started.');
 			});
 		},
 		onfalse: () => {
-			log('You\'re browsing.')
+			//log('You\'re browsing.')
 			if(adModuleObserver) adModuleObserver.disconnect();
 		}
 	});
