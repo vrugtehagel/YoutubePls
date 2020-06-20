@@ -251,10 +251,12 @@ console.log('Convenient Youtube started.');
 				ontrue: () => {
 					unpause();
 					const buttons = popupContainer.querySelectorAll('yt-confirm-dialog-renderer .buttons > :not([hidden])');
-					if(buttons.length == 1){
-						buttons[0].click();
-						log('\tclicked away the "are you still there" window');
-					}
+					if(buttons.length != 1) return;
+					const button = buttons[0];
+					const rect = button.getBoundingClientRect();
+					if(!rect.width || !rect.height) return;
+					buttons[0].click();
+					log('\tclicked away the "are you still there" window');
 					//const annoyingDialog = Array.from(popupContainer.children).filter(dialog => !dialogs.includes(dialog))[0];
 					//console.log(dialogs, popupContainer.children, annoyingDialog);
 					//const buttons = annoyingDialog.querySelector('.buttons');
