@@ -13,7 +13,7 @@ console.log('Convenient Youtube started.');
 	let fakeClickId = -1;
 	let options = {
 		mimicClick: true,
-		muteAds: false,
+		muteAds: true,
 		autoSkip: true,
 		autoClose: true,
 		autoImHere: true
