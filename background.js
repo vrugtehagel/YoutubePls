@@ -14,7 +14,7 @@ chrome.runtime.onInstalled.addListener(function(){
 
 	chrome.storage.sync.set({
 		mimicClick: true,
-		muteAds: false,
+		muteAds: true,
 		autoSkip: true,
 		autoClose: true,
 		autoImHere: true
