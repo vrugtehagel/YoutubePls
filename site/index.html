@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<meta name="title" content="YoutubePls">
+	<meta name="description" content="Want to support creators, but don't like ads? This chrome extension is just for you!">
+	<meta name="keywords" content="youtube, pls, plus, convenient, chrome, extension, ads">
+	<meta name="robots" content="index, follow">
+	<meta name="language" content="English">
+
+	<link rel="stylesheet" href="design/general.css">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;900&display=swap" rel="stylesheet">
+
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const body = document.querySelector('body');
+			const readMoreButton = document.getElementById('read-more');
+			const main = document.querySelector('main');
+			const section = document.querySelector('section');
+
+			readMoreButton.addEventListener('click', () => fullMode(true));
+
+			const fullMode = bool => {
+				body.classList.toggle('full-mode', bool);
+				if(body.classList.contains('full-mode')){
+					section.style.height = section.scrollHeight + 'px';
+				}
+				else{
+					section.style.height = '0px';
+				}
+			};
+
+			const isChrome = (() => {
+				const isChromium = window.chrome;
+				const vendor = window.navigator.vendor;
+				const isOpera = typeof window.opr !== "undefined";
+				const isIEedge = window.navigator.userAgent.indexOf("Edge") > -1;
+				const isIOSChrome = window.navigator.userAgent.match("CriOS");
+				if(isIOSChrome) return true;
+				return (isChromium !== null &&
+					typeof isChromium !== "undefined" &&
+					vendor === "Google Inc." &&
+					isOpera === false &&
+					isIEedge === false);
+			})();
+
+			if(!isChrome) body.classList.add('not-chrome');
+
+			document.addEventListener('wheel', event => {
+				if(event.deltaY > 0) fullMode(true);
+				if(event.deltaY < 0) fullMode(false);
+			});
+
+			document.addEventListener('keydown', event => {
+				if(event.key == 'Escape') return fullMode(false);
+				if(event.key == 'F11') return fullMode();
+				if(event.key == 'f') return fullMode();
+			});
+
+			main.addEventListener('touchend', () => {
+				if(event.target.classList.contains('download-button')) return;
+				fullMode();
+			});
+		});
+	</script>
+	<title></title>
+</head>
+<body>
+	<svg id="app-logo" viewBox="0 0 48 48">
+		<path style="fill:currentColor;" d="M0 0L0 48L40 24M40 0H48V48H40"/>
+	</svg>
+	<a id="author-logo" href="https://vrugtehagel.nl">
+		<svg viewBox="0 0 40 40" width="40" height="40" class="vrugtehagel" role="img">
+			<title>vrugtehagel</title>
+			<g style="stroke: currentColor;fill: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 4px;">
+				<path d="M25 28L32 12 M7 12L14 28L21 12" style="fill: none;"></path>
+				<circle cx="23" cy="20" r="2" style="stroke: none;"></circle>
+			</g>
+		</svg>
+	</a>
+	<main>
+		<svg id="video-background" viewBox="0 0 16 9" preserveAspectRatio="none">
+			<path d="M-1 -1L2 10L-1 10Z"/>
+			<path d="M-1 7L10 9L-1 10Z"/>
+			<path d="M15 10L16 3L17 10Z"/>
+			<path d="M-1 1M-1 1L9 0L-1 -1Z"/>
+		</svg>
+		<header>
+			<svg viewBox="0 0 48 48">
+				<path style="fill:currentColor;" d="M0 0L0 48L40 24M40 0H48V48H40"/>
+			</svg>
+			YoutubePls
+		</header>
+		<section>
+			<p>
+				A better youtube experience while still supporting your favorite creators. Here's what this chrome extension does:
+			</p>
+			<ul>
+				<li>Mute ads and skip them whenever possible</li>
+				<li>Clicks away popup ads</li>
+				<li>And yes, youtube, I'm still there.</li>
+			</ul>
+			<nav>
+				<span>It only works in Google Chrome! Sorry :(</span>
+				<a href="#" class="download-button">coming soon!</a>
+			</nav>
+		</section>
+		<nav id="quick-nav">
+			<button id="read-more">read more</button>
+			<a href="#" class="download-button">coming soon!</a>
+		</nav>
+	</main>
+</body>
+</html>
