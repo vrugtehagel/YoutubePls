@@ -1,9 +1,7 @@
-$almostWhite: #f9f9f9;
-
 body {
-	background-color: $almostWhite;
+	background-color: #f9f9f9;
 	margin: 0;
-	background-image: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 380 100'%3E%3Crect width='160' height='90' x='5' y='5' rx='2' style='fill:%23e3e3e3;'/%3E%3Crect width='200' height='20' x='175' y='5' rx='2' style='fill:%23e3e3e3;'/%3E%3Crect width='120' height='20' x='175' y='35' rx='2' style='fill:%23e3e3e3;'/%3E%3C/svg%3E");
+	background-image: url("data:image/svg+xml, %3Csvg viewBox='0 0 380 100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='160' height='90' x='5' y='5' rx='2' style='fill:%23e3e3e3;'/%3E%3Crect width='200' height='20' x='175' y='5' rx='2' style='fill:%23e3e3e3;'/%3E%3Crect width='120' height='20' x='175' y='35' rx='2' style='fill:%23e3e3e3;'/%3E%3C/svg%3E");
 	background-repeat: repeat-y;
 	background-size: 380px auto;
 	background-position: calc(100vw - 400px) 72px;
@@ -22,7 +20,7 @@ body {
 		right: 0;
 		height: 54px;
 		background-color: white;
-		box-shadow: 0 18px 0 $almostWhite;
+		box-shadow: 0 18px 0 #f9f9f9;
 	}
 	&::after{
 		content: "";
@@ -35,6 +33,26 @@ body {
 		background-repeat: no-repeat;
 		background-size: 100% auto;
 	}
+}
+
+#svg-definitions { display: none; }
+
+#youtubepls-logo {
+	color: red;
+	position: fixed;
+	top: 18px;
+	left: 24px;
+	height: 18px;
+	width: 18px;
+}
+
+#vrugtehagel-logo {
+	color: #e3e3e3;
+	position: fixed;
+	top: 9px;
+	right: 18px;
+	height: 36px;
+	width: 36px;
 }
 
 main {
@@ -51,15 +69,20 @@ main {
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
+	& > * { z-index: 2; }
 }
 
-main > :first-child ~ * { z-index: 3; }
+#video-background {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
 
 #quick-nav {
 	position: absolute;
 	bottom: 24px;
-	right: 24px;	
-	z-index: 3;
+	right: 24px;
 	font-size: .8em;
 	transition: .5s .3s;
 }
@@ -74,67 +97,33 @@ main > :first-child ~ * { z-index: 3; }
 	border: none;
 	cursor: pointer;
 	border-radius: 4px;
+	outline: none;
 }
 
 .download-button{
 	text-decoration: none;
-	border-bottom: 3px solid rgba(0, 0, 0, 0.2);
 	background: #cc0000;
+	border-bottom: 3px solid rgba(0, 0, 0, 0.2);
 }
 
 #read-more {
 	text-decoration: underline;
 	background: none;
-	transition: .2s;
-	outline: none;
 	margin-right: 8px;
-	&:hover {
-		background-color: rgba(255, 255, 255, 0.1);
-	}
+	transition: .2s;
+	&:hover { background-color: rgba(255, 255, 255, 0.1); }
 }
 
 header {
 	font-size: 3em;
 	font-weight: 900;
-	margin: 0 0 64px 0;
+	transition: .5s;
+	margin: 0;
 	svg {
 		display: inline-block;
 		height: 1.5em;
 		float: left;
 		margin-right: .8ch;
-	}
-}
-
-#video-background {
-	display: block;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 1;
-}
-
-#app-logo {
-	color: red;
-	position: fixed;
-	height: 18px;
-	width: 18px;
-	top: 18px;
-	left: 24px;
-}
-
-#author-logo {
-	color: #e3e3e3;
-	position: fixed;
-	top: 9px;
-	right: 18px;
-	padding: 0;
-	height: 36px;
-	width: 36px;
-	svg {
-		width: 100%;
-		height: 100%;
 	}
 }
 
@@ -145,16 +134,34 @@ section {
 	width: 90%;
 	transition: height .5s 0s,
 		opacity .3s;
-	ul {
-		margin-bottom: 64px;
-	}
 	nav {
-		span { display: none; }
+		margin-top: 64px;
 		width: 100%;
 		text-align: center;
 		opacity: 0;
 		transform: translateY(12px);
 		transition: 0s;
+		span { display: none; }
+	}
+}
+
+#github {
+	color: inherit;
+	padding: 12px 24px;
+	border: 1px solid currentColor;
+	box-shadow: -4px 4px 0 currentColor;
+	position: absolute;
+	bottom: 18px;
+	left: 18px;
+	font-size: .8em;
+	text-decoration: none;
+	text-transform: uppercase;
+	letter-spacing: .2ch;
+	opacity: 0;
+	transform: translateY(12px);
+	transition: .5s;
+	&:hover {
+		box-shadow: 0 0 0 3px currentColor; 
 	}
 }
 
@@ -177,6 +184,7 @@ section {
 		pointer-events: none;
 		transition-delay: 0s;
 	}
+	header { margin: 0 0 64px 0; }
 	section {
 		opacity: 1;
 		transition: height .5s,
@@ -187,13 +195,18 @@ section {
 			transition: .5s .8s;
 		}
 	}
+	#github {
+		opacity: 1;
+		transform: none;
+	}
 }
 
-
+// MEDIA QUERIES --------------------------------------------------------------
 
 @media (max-width: 1100px){
 	body {
 		background-image: none;
+		font-size: 20px;
 		&::after {
 			width: unset;
 			max-width: unset;
@@ -208,24 +221,18 @@ section {
 }
 
 @media (max-width: 800px){
-	body {
-		padding: 54px 0 0;
-	}
-	main {
-		margin: 0;
-	}
+	body { padding: 54px 0 0; }
+	main { margin: 0; height: 56.25vw; }
 	header { font-size: 2em; }
 }
 
-@media (max-width: 500px){
-	#quick-nav .download-button { display: none; }
+@media (max-width: 650px){
+	body { font-size: 18px; }
 }
 
-body {
-	font-size: 25px;
-	@media (max-width: 1100px){ font-size: 20px; }
-	@media (max-width: 650px){ font-size: 18px; }
-	@media (max-width: 500px){ font-size: 16px; }
+@media (max-width: 500px){
+	body { font-size: 16px; }
+	#quick-nav .download-button { display: none; }
 }
 
 @media (min-width: 1340px){
@@ -241,27 +248,23 @@ body {
 	}
 }
 
+// SVG ANIMATION --------------------------------------------------------------
 
-//SVG ANIMATION---------------------------------------------------------
 @keyframes sway1 {
 	from { transform: none; }
-	50% { transform: rotate(-5deg) translateX(-1px); }
-	to { transform: none; }
+	to { transform: rotate(-5deg) translateX(-1px); }
 }
 @keyframes sway2 {
 	from { transform: none; }
-	50% { transform: rotate(-2deg) translateY(1px); }
-	to { transform: none; }
+	to { transform: rotate(-2deg) translateY(1px); }
 }
 @keyframes sway3 {
 	from { transform: none; }
-	50% { transform: rotate(1deg) translateY(-.8px); }
-	to { transform: none; }
+	to { transform: rotate(1deg) translateY(-.8px); }
 }
 @keyframes sway4 {
 	from { transform: none; }
-	50% { transform: rotate(4deg) translateY(-.7px); }
-	to { transform: none; }
+	to { transform: rotate(4deg) translateY(-.7px); }
 }
 
 #video-background path {
@@ -269,9 +272,9 @@ body {
 	transition: 1s;
 }
 
-#video-background path:nth-child(1){ animation:5s ease-in-out infinite sway1; }
-#video-background path:nth-child(2){ animation:8s ease-in-out infinite sway2; }
-#video-background path:nth-child(3){ animation:6s ease-in-out infinite sway3; }
-#video-background path:nth-child(4){ animation:9s ease-in-out infinite sway4; }
+#video-background path:nth-child(1){ animation:5s ease-in-out alternate infinite sway1; }
+#video-background path:nth-child(2){ animation:4s ease-in-out alternate infinite sway2; }
+#video-background path:nth-child(3){ animation:6s ease-in-out alternate infinite sway3; }
+#video-background path:nth-child(4){ animation:9s ease-in-out alternate infinite sway4; }
 
-.full-mode #video-background path{ opacity: 0.3; }
+.full-mode #video-background path { opacity: 0.3; }
