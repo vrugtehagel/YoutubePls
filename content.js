@@ -1,7 +1,7 @@
-console.log('Convenient Youtube started.');
+console.log('YoutubePls started.');
 (function(){
 	const log = (message, type) => {
-		//return;
+		return;
 		if(type == 'warn') console.warn(message);
 		else console.log(message);
 	}
@@ -255,7 +255,13 @@ console.log('Convenient Youtube started.');
 					const button = buttons[0];
 					//const rect = button.getBoundingClientRect();
 					//if(!rect.width || !rect.height) return;
-					button.click();
+					let tries = 10;
+					const tryOnce = () => {
+						if(popupContainer.contains(button)) button.click();
+						tries--;
+						if(tries > 0) setTimeout(tryOnce, 50);
+					};
+					tryOnce();
 					log('\tclicked away the "are you still there" window');
 					//const annoyingDialog = Array.from(popupContainer.children).filter(dialog => !dialogs.includes(dialog))[0];
 					//console.log(dialogs, popupContainer.children, annoyingDialog);

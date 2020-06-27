@@ -49,7 +49,9 @@ body {
   top: 9px;
   right: 18px;
   height: 36px;
-  width: 36px; }
+  width: 36px;
+  z-index: 3;
+  transition: .5s; }
 
 main {
   position: relative;
@@ -163,6 +165,8 @@ section {
     width: 100%;
     height: 100vh;
     cursor: initial; }
+  .full-mode #vrugtehagel-logo {
+    color: inherit; }
   .full-mode #quick-nav {
     transform: translateY(24px);
     opacity: 0;
@@ -183,7 +187,6 @@ section {
 
 @media (max-width: 1100px) {
   body {
-    background-image: none;
     font-size: 20px; }
     body::after {
       width: unset;
@@ -191,7 +194,7 @@ section {
       margin: 20px 20px 0; }
 
   main {
-    width: unset;
+    width: calc(100% - 40px);
     margin: 5px 20px 0;
     height: calc((100vw - 20px) / 16 * 9); } }
 @media (max-width: 800px) {
@@ -200,19 +203,30 @@ section {
 
   main {
     margin: 0;
+    width: 100%;
     height: 56.25vw; }
 
   header {
     font-size: 2em; } }
 @media (max-width: 650px) {
   body {
-    font-size: 18px; } }
+    font-size: 18px;
+    background-size: 90vw auto;
+    background-position: 5vw calc(61.25vw + 54px); }
+    body::after {
+      content: none; }
+
+  main {
+    box-shadow: 0 5vw 0 #f9f9f9; } }
 @media (max-width: 500px) {
   body {
     font-size: 16px; }
 
   #quick-nav .download-button {
     display: none; } }
+@media (max-width: 1100px) and (min-width: 651px) {
+  body {
+    background-image: none; } }
 @media (min-width: 1340px) {
   body::after {
     margin-left: calc(33% - 442px); } }

@@ -1,16 +1,16 @@
 {
 	"manifest_version": 2,
 
-	"name": "Convenient Youtube",
+	"name": "YoutubePls",
 	"description": "Too lazy to click the skip buttons in Youtube? Too much effort clicking the x on popup ads? Don't worry, this extension will do it for you.",
-	"version": "0.1.4",
+	"version": "0.2",
 
 	"page_action": {
 		"default_icon": {
-			"16": "images/get_started16.png",
-			"32": "images/get_started32.png",
-			"48": "images/get_started48.png",
-			"128": "images/get_started128.png"
+			"16": "logo-16.png",
+			"32": "logo-32.png",
+			"48": "logo-48.png",
+			"128": "logo-128.png"
 		},
 		"default_popup": "popup.html"
 	},
@@ -26,7 +26,6 @@
 	},
 	"permissions": ["declarativeContent", "storage", "https://youtube.com/", "tabs"],
 	"content_scripts": [{
-//		"css": ["styles.css"],
 		"js": ["content.js"],
 		"matches": ["https://youtube.com/*", "https://www.youtube.com/*"]
 	}]
