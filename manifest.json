@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 
 	"name": "YoutubePls",
-	"description": "Too lazy to click the skip buttons in Youtube? Too much effort clicking the x on popup ads? Don't worry, this extension will do it for you.",
+	"description": "Too lazy to click the skip button in Youtube? Too much effort clicking away popup ads? No worries, this extension does it for you.",
 	"version": "0.2",
 
 	"page_action": {
