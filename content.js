@@ -8,7 +8,7 @@ console.log('YoutubePls started.');
 	const ytdApp = document.querySelector('ytd-app');
 	let muted = false;
 	let volume = null;
-	let userActive = true;
+	let userActive = Date.now();
 	let adModuleObserver = null;
 	let fakeClickId = -1;
 	let options = {
@@ -117,14 +117,8 @@ console.log('YoutubePls started.');
 
 	// check for user input to detect when the user is inactive
 	(() => {
-		let id = -1;
-		const resetTimer = () => {
-			clearTimeout(id);
-			userActive = true;
-			id = setTimeout(() => userActive = false, 10000);
-		};
-		['mousemove', 'mousedown', 'mouseup', 'scroll', 'mousewheel', 'keypress', 'touchstart', 'touchmove', 'touchend'].forEach(event => {
-			document.addEventListener(event, resetTimer);
+		['click', 'keydown', 'touchstart', 'touchend'].forEach(event => {
+			document.addEventListener(event, () => userActive = Date.now());
 		});
 	})();
 
@@ -237,11 +231,9 @@ console.log('YoutubePls started.');
 			lookFor({
 				element: popupContainer,
 				config: {childList: true, attributes: true, subtree: true},
-				onchange: () => {
-					dialogs = Array.from(popupContainer.children);
-				},
 				pattern: () => {
-					if(isPaused()) return true;
+					if(!isPaused()) return false;
+					if(Date.now() - userActive < 2000) return false;
 					return false;
 					//if(userActive) return false;
 					//if(dialogs.length + 1 != popupContainer.children.length) return false;
@@ -251,6 +243,7 @@ console.log('YoutubePls started.');
 				ontrue: () => {
 					unpause();
 					const buttons = popupContainer.querySelectorAll('yt-confirm-dialog-renderer .buttons > :not([hidden])');
+					console.log(buttons);
 					if(buttons.length != 1) return;
 					const button = buttons[0];
 					//const rect = button.getBoundingClientRect();
