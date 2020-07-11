@@ -234,7 +234,7 @@ console.log('YoutubePls started.');
 				pattern: () => {
 					if(!isPaused()) return false;
 					if(Date.now() - userActive < 2000) return false;
-					return false;
+					return true;
 					//if(userActive) return false;
 					//if(dialogs.length + 1 != popupContainer.children.length) return false;
 					//if(newDialogs.length != 1) return false;
