@@ -3,7 +3,7 @@
 
 	"name": "YoutubePls",
 	"description": "Too lazy to click the skip button in Youtube? Too much effort clicking away popup ads? No worries, this extension does it for you.",
-	"version": "1.0.1",
+	"version": "1.1",
 
 	"page_action": {
 		"default_icon": {
