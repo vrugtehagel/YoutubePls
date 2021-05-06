@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+:root {
+    --text-color: rgb(3 3 3);
+    --text-color-dim: rgb(96 96 96);
+    --text-color-error: rgb(255 32 32);
+    --background-color: rgb(249 249 249);
+    --overlay-color: rgb(220 220 220 / 75%);
+    --toggle-switch-track-color: rgb(204 204 204);
+    --toggle-switch-thumb-color: rgb(144 144 144);
+    --accent-color: rgb(6 95 212);
+}
+
+:root[data-theme=dark] {
+    --text-color: white;
+    --text-color-dim: rgb(170 170 170);
+    --text-color-error: rgb(228 115 115);
+    --background-color: rgb(24 24 24);
+    --overlay-color: rgb(48 48 48 / 75%);
+    --toggle-switch-track-color: rgb(96 96 96);
+    --toggle-switch-thumb-color: rgb(144 144 144);
+    --accent-color: rgb(62 166 255);
+}
+
+body {
+    margin: 0;
+    font: 1rem / 1.5 Roboto, Arial, sans-serif;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    padding: .5rem;
+    width: 400px;
+    box-sizing: border-box;
+}
+
+header {
+    display: flex;
+    padding: 1rem 1.5rem;
+    margin-bottom: .5rem;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 0;
+}
+
+.logo {
+    display: inline-block;
+    height: 1.5rem;
+    color: red;
+    /*opacity: .7;*/
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    display: flex;
+    padding: .5rem 1rem;
+    gap: 1rem;
+}
+
+li[hidden] { display: none; }
+
+toggle-switch {
+    flex: 0 0 auto;
+    width: 2.5rem;
+    height: 1.25rem;
+    margin: .125rem 0;
+}
+
+toggle-switch::part(thumb){
+    color: var(--toggle-switch-thumb-color);
+    box-shadow: 0 1px 5px 0 rgb(0 0 0 / 60%);
+}
+
+toggle-switch::part(track){
+    color: var(--toggle-switch-track-color);
+    opacity: .4;
+}
+
+toggle-switch[checked]::part(thumb){
+    color: var(--accent-color);
+}
+
+.info {
+    font-size: .875rem;
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.title {
+    line-height: 1;
+    font-weight: 500;
+}
+
+.description {
+    line-height: 1.25;
+    color: var(--text-color-dim);
+}
+
+.error {
+    color: var(--text-color-error);
+    font-size: .75rem;
+}
+
+#loading-overlay {
+    --fadeout-duration: 0s;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    inset: 0;
+    background-color: var(--overlay-color);
+    transition:
+        opacity var(--fadeout-duration),
+        left 0s 0s;
+}
+
+.loading-icon {
+    display: inline-block;
+    height: 1.5rem;
+    color: red;
+    overflow: visible;
+}
+
+#loading-overlay[hidden] {
+    opacity: 0;
+    left: 100vw;
+    transition:
+        opacity var(--fadeout-duration),
+        left 0s var(--fadeout-duration);
+}

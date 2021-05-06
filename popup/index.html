@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <link rel="stylesheet" href="./index.css">
+
+    <script type="module" src="./components/toggle-switch.js"></script>
+    <script src="./index.js"></script>
+
+    <title>YoutubePls</title>
+</head>
+<body>
+
+    <header>
+        <svg viewBox="0 0 6 6" class="logo">
+            <path d="M0 0V6L5 3V6H6V0H5V3Z" style="fill:currentcolor;"/>
+        </svg>
+        <h1>YoutubePls</h1>
+    </header>
+
+    <ul>
+        <li data-option="autoSkip">
+            <toggle-switch></toggle-switch>
+            <div class="info">
+                <span class="title">Auto-skip</span>
+                <span class="description">Automatically click the "skip" button whenever it becomes available</span>
+            </div>
+        </li>
+        <li data-option="autoClose">
+            <toggle-switch></toggle-switch>
+            <div class="info">
+                <span class="title">Auto-close</span>
+                <span class="description">Click away the popup ads that appear while a video is playing</span>
+            </div>
+        </li>
+        <li data-option="muteAds">
+            <toggle-switch></toggle-switch>
+            <div class="info">
+                <span class="title">Mute ads</span>
+                <span class="description">Silence video ads</span>
+            </div>
+        </li>
+        <li data-option="mimicClick" hidden>
+            <toggle-switch></toggle-switch>
+            <div class="info">
+                <span class="title">Mimic click</span>
+                <span class="description">Create a small delay before performing any task to mimic clicking</span>
+            </div>
+        </li>
+        <li data-option="autoImHere">
+            <toggle-switch></toggle-switch>
+            <div class="info">
+                <span class="title">I'm still here</span>
+                <span class="description">Click away the dialogs asking to continue the video</span>
+                <span class="error">This feature currently does nothing - it will be updated soon.</span>
+            </div>
+        </li>
+    </ul>
+
+    <div id="loading-overlay">
+        <svg viewBox="0 0 6 6" class="loading-icon">
+            <style>
+                @keyframes YoutubePlsTriangle {
+                    from { transform: none; }
+                    50% { transform: translateX(2.536px) rotate(60deg); }
+                    to { transform: rotate(120deg); }
+                }
+                @keyframes YoutubePlsRectangle {
+                    0%, 13%, 87%, 100% { transform: none; }
+                    25%, 75% { transform: scaleX(0); }
+                }
+            </style>
+            <path d="M0 0V6L5.196 3L0 0" style="fill:currentcolor;transform-origin:1.732px 3px;animation:YoutubePlsTriangle 1.2s infinite;"/>
+            <path d="M5 0V6H6V0H5" style="fill:currentcolor;transform-origin:6px 3px;animation:YoutubePlsRectangle 2.4s infinite;"/>
+        </svg>
+    </div>
+
+</body>
+</html>
