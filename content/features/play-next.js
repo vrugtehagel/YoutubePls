@@ -7,12 +7,12 @@
     const {youtubePls, player} = window;
 
     const tracker = player.createVisibilityTracker({
-        selector: '.ytp-ad-overlay-close-button',
+        selector: '.ytp-autonav-endscreen-upnext-play-button',
         onvisible: ({element}) => youtubePls.click(element)
     });
 
 
-    youtubePls.addFeature('autoClose', {
+    youtubePls.addFeature('playNext', {
         connect(){ tracker.connect(); },
         disconnect(){ tracker.disconnect(); }
     });

@@ -1,9 +1,9 @@
 const defaults = {
-    autoSkip: true,
     autoClose: true,
-    muteAds: true,
     autoImHere: true,
-    mimicClick: true
+    autoSkip: true,
+    muteAds: true,
+    playNext: false
 };
 
 chrome.runtime.onInstalled.addListener(function(){

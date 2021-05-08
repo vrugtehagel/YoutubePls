@@ -1,102 +1,6 @@
 console.log('YoutubePls started');
 
-window.setup = true;
-
-// can track an element for either presence or visibility.
-// set either the onvisible/onhidden for visibility checking, or
-// set the onpresent/onabsent properties for presence checking.
-// call connect() to start tracking, disconnect() to stop.
-window.TrackedElement = class TrackedElement {
-    #selector = '';
-    #controllers = [];
-    #previousState = 'none'; // visible | hidden | present | absent
-
-    onvisible = null;
-    onhidden = null;
-    onpresent = null;
-    onabsent = null;
-
-    constructor(selector){
-        this.#selector = selector;
-    }
-
-    get type(){
-        if(this.onpresent || this.onabsent) return 'presence';
-        if(this.onvisible || this.onhidden) return 'visibility';
-        return 'none';
-    }
-
-    connect(){
-        const controller = new AbortController();
-        const {signal} = controller;
-        this.#controllers.push(controller);
-        window.player.addEventListener('change', event => {
-            this.#dispatchStateChange();
-        }, {signal});
-        this.#forceStateChange();
-    }
-
-    disconnect(){
-        this.#controllers.forEach(controller => controller.abort());
-    }
-
-    get element(){
-        return window.player.root.querySelector(this.#selector);
-    }
-
-    get allElements(){
-        return [...window.player.root.querySelectorAll(this.#selector)];
-    }
-
-    #forceStateChange(){
-        this.#previousState = 'none';
-        this.#dispatchStateChange();
-    }
-
-    #dispatchStateChange(){
-        const previousState = this.#previousState;
-        let state = 'none';
-        let element = null;
-        switch(this.type){
-            case 'presence':
-                element = this.element;
-                state = element ? 'present' : 'absent';
-                break;
-            case 'visibility':
-                const {allElements} = this;
-                element = allElements.find(element => element.offsetParent);
-                state = element ? 'visible' : 'hidden';
-                break;
-        }
-        if(state == previousState) return;
-        this.#previousState = state;
-        this['on' + state]?.(element);
-    }
-};
-
-// this is a wrapper for the youtube video playing
-// it tracks changes in the DOM and emit change events for it
-// that the TrackedElements can listen to. Has a root and video
-// property for convenience.
-window.player = new class MoviePlayer extends EventTarget {
-    root = document.getElementById('movie_player');
-
-    constructor(){
-        super();
-        this.#createElementObserver();
-    }
-
-    get video(){ return this.root.querySelector('video'); }
-
-    #createElementObserver(){
-        const {root} = this;
-        new MutationObserver(detail => {
-            this.dispatchEvent(new CustomEvent('change', {detail}));
-        }).observe(root, {childList: true, subtree: true, attributes: true});
-    }
-};
-
-// the container for the features. Add a feature by calling
+// The container for the features. Add a feature by calling
 // addFeature with a string for the name and an object with
 // properties connect and disconnect. Check the files inside
 // content/features for examples.
@@ -169,6 +73,107 @@ window.youtubePls = new class YoutubePls {
     }
 };
 
-window.youtubePls
-    .initialize()
-    .then(() => window.dispatchEvent(new CustomEvent('YoutubePlsLoaded')));
+// This is a wrapper for the youtube video playing
+// it tracks changes in the DOM and emit change events for it.
+// Has a root and video property for convenience, and lets you
+// create "element trackers" for listening to specific changes
+// in the DOM.
+window.player = new class MoviePlayer extends EventTarget {
+    root = document.getElementById('movie_player');
+
+    constructor(){
+        super();
+    }
+
+    async initialize(){
+        await this.#waitForRoot();
+        this.#createElementObserver();
+    }
+
+    get video(){ return this.root.querySelector('video'); }
+
+    async #waitForRoot(){
+        console.log('no found, searching...');
+        if(this.root) return;
+        const app = document.querySelector('ytd-app');
+        return new Promise(resolve => {
+            const observer = new MutationObserver(() => {
+                this.root = document.getElementById('movie_player');
+                if(!this.root) return console.log('still searching...');
+                console.log('found!');
+                resolve();
+                observer.disconnect();
+            });
+            observer.observe(app, {childList: true, subtree: true});
+        });
+    }
+
+    #createElementObserver(){
+        const {root} = this;
+        new MutationObserver(detail => {
+            this.dispatchEvent(new CustomEvent('change', {detail}));
+        }).observe(root, {childList: true, subtree: true, attributes: true});
+    }
+
+    #createTracker({callbacks, getState}){
+        let previousState = 'none';
+        const controllers = [];
+        const checkStateChange = ({reset} = {}) => {
+            if(reset) previousState = 'none';
+            const {state, event} = getState();
+            if(state == previousState) return;
+            previousState = state;
+            callbacks['on' + state]?.(event);
+        };
+        return {
+            connect(){
+                const controller = new AbortController();
+                const {signal} = controller;
+                controllers.push(controller);
+                window.player.addEventListener('change', () => {
+                    checkStateChange();
+                }, {signal});
+                checkStateChange({reset: true});
+            },
+            disconnect(){
+                controllers.forEach(controller => controller.abort());
+            }
+        };
+    }
+
+    // these create[state]Tracker methods are really useful for most features
+    // because they help to reliably and (somewhat) efficiently check when
+    // elements pop into and out of the screen or DOM. They return an object
+    // of the form {connect, disconnect} that you can use to start listening
+    // and stop listening to the elements.
+    createVisibilityTracker({selector, onvisible, onhidden}){
+        const getState = () => {
+            const element = [...this.root.querySelectorAll(selector)]
+                .find(element => element.offsetParent);
+            const state = element ? 'visible' : 'hidden';
+            const event = {element};
+            return {state, event};
+        };
+        const callbacks = {onvisible, onhidden};
+        return this.#createTracker({callbacks, getState});
+    }
+
+    createPresenceTracker({selector, onpresent, onabsent}){
+        const getState = () => {
+            const element = this.root.querySelector(selector);
+            const state = element ? 'present' : 'absent';
+            const event = {element};
+            return {state, event};
+        };
+        const callbacks = {onpresent, onabsent};
+        return this.#createTracker({callbacks, getState});
+    }
+};
+
+Promise.all([
+    window.youtubePls.initialize(),
+    window.player.initialize()
+]).then(() => {
+    window.setup = true;
+    window.dispatchEvent(new CustomEvent('YoutubePlsLoaded'))
+});
