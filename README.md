@@ -23,6 +23,7 @@ First, think of a short, accurate name for the feature. Let's take "mute ads" as
 - Create a file in `content/features/` using the feature name, e.g. `content/features/mute-ads.js`.
 - Add the file to the `content_scripts` in `manifest.json`.
 - Set a default in `service-worker.js`. For example, add `muteAds: true` to the list of defaults.
+- Add a toggle and a description in `popup/index.html` (the data-option attribute should match the name given to the service-worker in the previous step).
 - Now, time for the functionality. All of it should be written in the previously created file.
 
 How do you write a new feature? It's easy! Here's the boilerplate feature file:

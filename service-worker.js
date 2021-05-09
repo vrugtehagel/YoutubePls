@@ -3,7 +3,8 @@ const defaults = {
     autoImHere: true,
     autoSkip: true,
     muteAds: true,
-    playNext: false
+    playNext: false,
+    showPip: false
 };
 
 chrome.runtime.onInstalled.addListener(function(){

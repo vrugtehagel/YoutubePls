@@ -7,6 +7,7 @@ template.innerHTML = `
 
     <style>
         :host {
+            --toggle-duration: .1s;
             display: inline-block;
             height: 1rem;
             width: 2rem;
@@ -35,7 +36,7 @@ template.innerHTML = `
             background-color: currentcolor;
             border-radius: 50% / 100%;
             opacity: 0.5;
-            transition: .1s;
+            transition: var(--toggle-duration, .1s);
         }
 
         #thumb {
@@ -49,7 +50,7 @@ template.innerHTML = `
             background-color: currentcolor;
             border-radius: 50%;
             box-shadow: 0 1px 3px 0 rgb(0 0 0 / 40%);
-            transition: .1s;
+            transition: var(--toggle-duration, .1s);
         }
 
         :host([checked]) #track {

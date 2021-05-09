@@ -66,23 +66,23 @@ window.youtubePls = new class YoutubePls {
         chrome.runtime.onMessage.addListener((message, sender, respond) => {
             const {type, data} = message;
             if(type != 'settings-change') return;
-            console.log('toggle setting');
             this.#applySettings(data);
             respond();
         });
     }
 };
 
-// This is a wrapper for the youtube video playing
-// it tracks changes in the DOM and emit change events for it.
-// Has a root and video property for convenience, and lets you
-// create "element trackers" for listening to specific changes
-// in the DOM.
-window.player = new class MoviePlayer extends EventTarget {
-    root = document.getElementById('movie_player');
+// This tracks changes in the DOM and emit change events for it.
+// Lets you create "element trackers" for listening to specific changes
+// in the DOM inside specific elements.
+window.TrackedElement = class TrackedElement extends EventTarget {
+    #selector = '';
+    root = null;
 
-    constructor(){
+    constructor(selector){
         super();
+        this.#selector = selector;
+        this.root = document.querySelector(this.#selector);
     }
 
     async initialize(){
@@ -90,17 +90,13 @@ window.player = new class MoviePlayer extends EventTarget {
         this.#createElementObserver();
     }
 
-    get video(){ return this.root.querySelector('video'); }
-
     async #waitForRoot(){
-        console.log('no found, searching...');
         if(this.root) return;
         const app = document.querySelector('ytd-app');
         return new Promise(resolve => {
             const observer = new MutationObserver(() => {
-                this.root = document.getElementById('movie_player');
-                if(!this.root) return console.log('still searching...');
-                console.log('found!');
+                this.root = document.querySelector(this.#selector);
+                if(!this.root) return;
                 resolve();
                 observer.disconnect();
             });
@@ -112,7 +108,7 @@ window.player = new class MoviePlayer extends EventTarget {
         const {root} = this;
         new MutationObserver(detail => {
             this.dispatchEvent(new CustomEvent('change', {detail}));
-        }).observe(root, {childList: true, subtree: true, attributes: true});
+        }).observe(root, {childList: true, subtree: true});
     }
 
     #createTracker({callbacks, getState}){
@@ -170,10 +166,22 @@ window.player = new class MoviePlayer extends EventTarget {
     }
 };
 
-Promise.all([
-    window.youtubePls.initialize(),
-    window.player.initialize()
-]).then(() => {
+window.player = new class extends TrackedElement {
+    constructor(){
+        super('#movie_player');
+    }
+
+    get video(){ return window.player.root.querySelector('video'); }
+};
+
+window.popups = new TrackedElement('ytd-popup-container');
+
+(async function initialize(...objects){
+    await Promise.all(objects.map(object => object.initialize()));
     window.setup = true;
-    window.dispatchEvent(new CustomEvent('YoutubePlsLoaded'))
-});
+    window.dispatchEvent(new CustomEvent('YoutubePlsLoaded'));
+})(
+    window.youtubePls,
+    window.player,
+    window.popups
+);

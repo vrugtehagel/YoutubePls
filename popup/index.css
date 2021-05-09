@@ -28,14 +28,16 @@ body {
     color: var(--text-color);
     background-color: var(--background-color);
     padding: .5rem;
-    width: 400px;
+    width: 500px;
     box-sizing: border-box;
 }
+
+.initializing #loading-overlay { --fadeout-duration: 0s; }
+.initializing toggle-switch { --toggle-duration: 0s; }
 
 header {
     display: flex;
     padding: 1rem 1.5rem;
-    margin-bottom: .5rem;
     align-items: center;
     gap: 1.5rem;
 }
@@ -50,11 +52,10 @@ h1 {
     display: inline-block;
     height: 1.5rem;
     color: red;
-    /*opacity: .7;*/
 }
 
 ul {
-    padding: 0;
+    padding: .5rem 0;
     margin: 0;
 }
 
@@ -110,7 +111,7 @@ toggle-switch[checked]::part(thumb){
 }
 
 #loading-overlay {
-    --fadeout-duration: 0s;
+    --fade-duration: .3s;
 
     display: flex;
     justify-content: center;
