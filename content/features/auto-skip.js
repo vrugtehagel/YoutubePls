@@ -4,16 +4,17 @@
         window.addEventListener('YoutubePlsLoaded', resolve);
     });
 
-    const {TrackedElement, youtubePls} = window;
-    const tracked = new TrackedElement('.ytp-ad-skip-button');
+    const {youtubePls, player} = window;
 
-    tracked.onvisible = element => {
-        window.youtubePls.click(element);
-    }
+    const tracker = player.createVisibilityTracker({
+        selector: '.ytp-ad-skip-button',
+        onvisible: ({element}) => youtubePls.click(element)
+    });
+
 
     youtubePls.addFeature('autoSkip', {
-        connect(){ tracked.connect(); },
-        disconnect(){ tracked.disconnect(); }
+        connect(){ tracker.connect(); },
+        disconnect(){ tracker.disconnect(); }
     });
 
 })();

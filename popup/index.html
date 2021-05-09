@@ -11,7 +11,7 @@
 
     <title>YoutubePls</title>
 </head>
-<body>
+<body class="initializing">
 
     <header>
         <svg viewBox="0 0 6 6" class="logo">
@@ -25,7 +25,7 @@
             <toggle-switch></toggle-switch>
             <div class="info">
                 <span class="title">Auto-skip</span>
-                <span class="description">Automatically click the "skip" button whenever it becomes available</span>
+                <span class="description">Automatically skip ads by clicking the "skip" button whenever it becomes available</span>
             </div>
         </li>
         <li data-option="autoClose">
@@ -42,19 +42,25 @@
                 <span class="description">Silence video ads</span>
             </div>
         </li>
-        <li data-option="mimicClick" hidden>
-            <toggle-switch></toggle-switch>
-            <div class="info">
-                <span class="title">Mimic click</span>
-                <span class="description">Create a small delay before performing any task to mimic clicking</span>
-            </div>
-        </li>
         <li data-option="autoImHere">
             <toggle-switch></toggle-switch>
             <div class="info">
                 <span class="title">I'm still here</span>
-                <span class="description">Click away the dialogs asking to continue the video</span>
-                <span class="error">This feature currently does nothing - it will be updated soon.</span>
+                <span class="description">Bypass the popup windows that ask whether you want to continue watching.</span>
+            </div>
+        </li>
+        <li data-option="playNext">
+            <toggle-switch></toggle-switch>
+            <div class="info">
+                <span class="title">Play next</span>
+                <span class="description">When the video ends, click "play next" immediately instead of waiting for the timer to run out.</span>
+            </div>
+        </li>
+        <li data-option="showPip">
+            <toggle-switch></toggle-switch>
+            <div class="info">
+                <span class="title">Picture-in-picture</span>
+                <span class="description">Show the picture-in-picture button in the toolbar of a video instead of the "show miniplayer" button.</span>
             </div>
         </li>
     </ul>
