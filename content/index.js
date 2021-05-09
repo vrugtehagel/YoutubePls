@@ -108,7 +108,7 @@ window.TrackedElement = class TrackedElement extends EventTarget {
         const {root} = this;
         new MutationObserver(detail => {
             this.dispatchEvent(new CustomEvent('change', {detail}));
-        }).observe(root, {childList: true, subtree: true});
+        }).observe(root, {childList: true, subtree: true, attributes: true});
     }
 
     #createTracker({callbacks, getState}){
@@ -122,16 +122,16 @@ window.TrackedElement = class TrackedElement extends EventTarget {
             callbacks['on' + state]?.(event);
         };
         return {
-            connect(){
+            connect: () => {
                 const controller = new AbortController();
                 const {signal} = controller;
                 controllers.push(controller);
-                window.player.addEventListener('change', () => {
+                this.addEventListener('change', () => {
                     checkStateChange();
                 }, {signal});
                 checkStateChange({reset: true});
             },
-            disconnect(){
+            disconnect: () => {
                 controllers.forEach(controller => controller.abort());
             }
         };
@@ -174,8 +174,6 @@ window.player = new class extends TrackedElement {
     get video(){ return window.player.root.querySelector('video'); }
 };
 
-window.popups = new TrackedElement('ytd-popup-container');
-
 (async function initialize(...objects){
     await Promise.all(objects.map(object => object.initialize()));
     window.setup = true;
@@ -183,5 +181,4 @@ window.popups = new TrackedElement('ytd-popup-container');
 })(
     window.youtubePls,
     window.player,
-    window.popups
 );

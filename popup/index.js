@@ -14,12 +14,14 @@ document.addEventListener('DOMContentLoaded', async function(){
     // ask the page what the theme is and match that in the popup
     // we also save it in chrome storage so we can make an educated guess
     html.dataset.theme = storage.theme ?? 'light';
-    chrome.tabs.sendMessage(tabs[0].id, {type: 'get-theme'}, response => {
-        if(!response) return;
-        const {theme} = response;
-        html.dataset.theme = theme;
-        chrome.storage.sync.set({theme});
-    });
+    if(tabs.length > 0){
+        chrome.tabs.sendMessage(tabs[0].id, {type: 'get-theme'}, response => {
+            if(!response) return;
+            const {theme} = response;
+            html.dataset.theme = theme;
+            chrome.storage.sync.set({theme});
+        });
+    }
 
     // setup change handlers and initialize each option
     lis.forEach(li => {
