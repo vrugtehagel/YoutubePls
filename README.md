@@ -5,10 +5,12 @@ Too lazy to click the skip buttons in Youtube? Too much effort clicking the x on
 ---
 
 Essentially, this is what this (unpacked) Chrome extension does:
- - skips ads whenever the skip button becomes available
- - clicks away popup ads in the blink of an eye
- - mutes video ads
- - click away "are you still watching" popups
+ - skip ads whenever the skip button becomes available
+ - click away popup ads in the blink of an eye
+ - mute video ads
+ - avoid "are you still watching" popups
+ - click "next video" rather than waiting for the timer
+ - enable picture-in-picture (swap the "miniplayer" button with a "picture-in-picture" button)
 
 All of these can be enabled and disabled. Check the YoutubePls icon in the toolbar for options.
 
