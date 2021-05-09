@@ -6,7 +6,7 @@
 
     const {youtubePls} = window;
 
-    let style = document.createElement('style');
+    const style = document.createElement('style');
     style.innerHTML = `
         .ytp-miniplayer-button {
             display: none !important;
