@@ -1,7 +1,7 @@
 {
     "name": "YoutubePls",
     "description": "Too lazy to click the skip button in Youtube? Too much effort clicking away popup ads? No worries, this extension does it for you.",
-    "version": "2.1",
+    "version": "2.2",
     "manifest_version": 3,
     "background": {"service_worker": "service-worker.js"},
     "permissions": ["storage", "tabs"],
@@ -28,6 +28,8 @@
             "content/features/auto-close.js",
             "content/features/auto-im-here.js",
             "content/features/auto-skip.js",
+            "content/features/defer-pause.js",
+            "content/features/hide-cookie-dialog.js",
             "content/features/mute-ads.js",
             "content/features/play-next.js",
             "content/features/show-pip.js"

@@ -2,6 +2,8 @@ const defaults = {
     autoClose: true,
     autoImHere: true,
     autoSkip: true,
+    deferPause: true,
+    hideCookieDialog: false,
     muteAds: true,
     playNext: false,
     showPip: false

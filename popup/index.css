@@ -22,6 +22,19 @@
     --accent-color: rgb(62 166 255);
 }
 
+::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+
+::-webkit-scrollbar-thumb {
+    height: 56px;
+    border-radius: 8px;
+    border: 4px solid transparent;
+    background-clip: content-box;
+    background-color: grey;
+}
+
 body {
     margin: 0;
     font: 1rem / 1.5 Roboto, Arial, sans-serif;
