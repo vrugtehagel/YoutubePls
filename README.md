@@ -11,6 +11,8 @@ Essentially, this is what this (unpacked) Chrome extension does:
  - avoid "are you still watching" popups
  - click "next video" rather than waiting for the timer
  - enable picture-in-picture (swap the "miniplayer" button with a "picture-in-picture" button)
+ - defer pausing until the ads have finished playing
+ - hide the cookie dialog (mostly useful for incognito tabs)
 
 All of these can be enabled and disabled. Check the YoutubePls icon in the toolbar for options.
 
